@@ -1,0 +1,33 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="{{url_for('home')}}" class="active">Home</a></li>
+						</ul>
+					</nav>
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Administrator Page</h2>
+										</header>
+										<p>
+											{% for player in players %}
+											<a href="{{ url_for('admin_edit', player_id=player.id) }}">
+											<h2> {{player.name}} </h2> </a>
+											{% endfor %}
+										</p>
+									</div>
+									<span class="image"><img src="{{ url_for('static', filename='images/pic01.jpg') }}" alt="" /></span>
+								</div>
+								<footer class="major">
+								</footer>
+							</section>
+					</div>
+
+{% include "footer.html" %}
