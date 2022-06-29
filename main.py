@@ -9,6 +9,7 @@ from forms import RegisterForm, LoginForm, EditForm, AdminForm
 from functools import wraps
 from flask import abort
 import os
+from players import Players
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
@@ -17,13 +18,13 @@ Bootstrap(app)
 
 
 # CONNECT TO DB from Heroku
-uri = os.environ.get("DATABASE_URL")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# uri = os.environ.get("DATABASE_URL")
+# if uri and uri.startswith("postgres://"):
+#     uri = uri.replace("postgres://", "postgresql://", 1)
+# app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 # CONNECT TO DB from Pycharm
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///club.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///club.db")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -196,76 +197,18 @@ def admin_edit(player_id):
 
 @app.route('/batcc_falcons', methods=["GET", "POST"])
 def batcc_falcons():
-    falcons_dict = {
-        "Dinesh Sasi Kumar ": "Dinesh",
-        "Vineet Bhola": "Vineet",
-        "Sasi Kiran Alur": "Sasi",
-        "Nitin Madan": "Nitin",
-        "Yeshodhara Baskaran": "Yeshodhara",
-        "Rohit Kumar Goyal": "Rohit",
-        "Satya Prakash Sahoo": "Satya",
-        "Zeeshan Sami": "Zeeshan",
-        "Amit Rajendra Desai": "Amit",
-        "Sriraman Ravi ": "Sriraman",
-        "Sanjeev Sivaraman ": "Sanjeev",
-        "Gundeep Singh": "Gundeep",
-        "Praveen Benni": "Praveen2",
-        "Harsh Mulrav": "Harsh",
-        "Saikiran Gundaboina": "Saikiran",
-        "Vinod Siddarajaiah": "Vinod",
-        "Rhys Robinson": "Rhys",
-        "Vineep Bhat": "Vineep",
-        "Ashish Satpathy": "Ashish",
-        "Bhavin Kantilal Solanki": "Bhavin",
-        "Praveen Kumar Daneti": "Praveen1",
-        "Raghavendra Bheemaiah": "Raghavendra",
-        "Shashidhara Hanumaiah Veerabhadraiah": "Shashidhara",
-    }
-
-    player_list = []
-    image_list = []
-    for player in falcons_dict:
-        player_list.append(player)
-        image_list.append(falcons_dict[player])
-    number_players = len(player_list)
-    return render_template("batcc_falcons.html", players=player_list, images=image_list, number_players=number_players)
+    falcon_players = Players()
+    falcon_players.get_falcons()
+    return render_template("batcc_falcons.html", players=falcon_players.player_list, images=falcon_players.image_list,
+                           number_players=falcon_players.number_players)
 
 
 @app.route('/batcc_lions', methods=["GET", "POST"])
 def batcc_lions():
-    lions_dict = {
-        "Dinesh Sasi Kumar ": "Dinesh",
-        "Vineet Bhola": "Vineet",
-        "Sasi Kiran Alur": "Sasi",
-        "Nitin Madan": "Nitin",
-        "Yeshodhara Baskaran": "Yeshodhara",
-        "Rohit Kumar Goyal": "Rohit",
-        "Satya Prakash Sahoo": "Satya",
-        "Zeeshan Sami": "Zeeshan",
-        "Amit Rajendra Desai": "Amit",
-        "Sriraman Ravi ": "Sriraman",
-        "Sanjeev Sivaraman ": "Sanjeev",
-        "Gundeep Singh": "Gundeep",
-        "Praveen Benni": "Praveen2",
-        "Harsh Mulrav": "Harsh",
-        "Saikiran Gundaboina": "Saikiran",
-        "Vinod Siddarajaiah": "Vinod",
-        "Rhys Robinson": "Rhys",
-        "Vineep Bhat": "Vineep",
-        "Ashish Satpathy": "Ashish",
-        "Bhavin Kantilal Solanki": "Bhavin",
-        "Praveen Kumar Daneti": "Praveen1",
-        "Raghavendra Bheemaiah": "Raghavendra",
-        "Shashidhara Hanumaiah Veerabhadraiah": "Shashidhara",
-    }
-
-    player_list = []
-    image_list = []
-    for player in lions_dict:
-        player_list.append(player)
-        image_list.append(lions_dict[player])
-    number_players = len(player_list)
-    return render_template("batcc_lions.html", players=player_list, images=image_list, number_players=number_players)
+    lion_players = Players()
+    lion_players.get_lions()
+    return render_template("batcc_falcons.html", players=lion_players.player_list, images=lion_players.image_list,
+                           number_players=lion_players.number_players)
 
 
 if __name__ == "__main__":
