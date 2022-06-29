@@ -227,8 +227,13 @@ def batcc_falcons():
 def batcc_lions():
     lion_players = Players()
     lion_players.get_lions()
-    return render_template("batcc_falcons.html", players=lion_players.player_list, images=lion_players.image_list,
+    return render_template("batcc_lions.html", players=lion_players.player_list, images=lion_players.image_list,
                            number_players=lion_players.number_players)
+
+
+@app.route('/scheduler')
+def scheduler():
+    return render_template("scheduler.html")
 
 
 if __name__ == "__main__":
