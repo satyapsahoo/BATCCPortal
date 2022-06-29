@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import RegisterForm, LoginForm, EditForm, AdminForm
+from forms import RegisterForm, LoginForm, EditForm, AdminForm, ResetPassword, ChangePassword
 from functools import wraps
 from flask import abort
 import os
@@ -137,8 +137,16 @@ def register():
 @app.route('/player_profile/<player_id>', methods=["GET", "POST"])
 @login_required
 def player_profile(player_id):
+    change_password_form = ChangePassword()
     player = User.query.filter_by(id=player_id).first()
-    return render_template("player_profile.html", player=player)
+    if change_password_form.validate_on_submit():
+        new_password = change_password_form.password.data
+        current_user.password = werkzeug.security.generate_password_hash(new_password, method='pbkdf2:sha256',
+                                                                           salt_length=8)
+        db.session.commit()
+        logout_user()
+        return redirect(url_for('login'))
+    return render_template("player_profile.html", player=player, form=change_password_form, current_user=current_user)
 
 
 @app.route('/edit_profile', methods=["GET", "POST"])
@@ -170,8 +178,20 @@ def edit_profile():
 @app.route('/admin_page', methods=["GET", "POST"])
 @admin_only
 def admin_page():
+    reset_password_form = ResetPassword()
     all_players = User.query.all()
-    return render_template("admin_page.html", players=all_players)
+    if reset_password_form.validate_on_submit():
+        name = reset_password_form.name.data
+        req_player = User.query.filter_by(name=name).first()
+        if req_player:
+            req_player.password = werkzeug.security.generate_password_hash("Batcc1234", method='pbkdf2:sha256',
+                                                                       salt_length=8)
+            db.session.commit()
+            flash('Password reset to Batcc1234')
+        else:
+            flash('User not found')
+        return redirect(url_for('admin_page'))
+    return render_template("admin_page.html", players=all_players, form=reset_password_form)
 
 
 @app.route('/admin_edit/<player_id>', methods=["GET", "POST"])

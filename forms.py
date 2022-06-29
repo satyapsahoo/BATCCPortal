@@ -42,3 +42,13 @@ class AdminForm(FlaskForm):
     weakness = CKEditorField("Weakness Area")
     improvements = CKEditorField("Improvement Area")
     submit = SubmitField("Submit")
+
+
+class ResetPassword(FlaskForm):
+    name = StringField("Name")
+    submit = SubmitField("Reset Password")
+
+
+class ChangePassword(FlaskForm):
+    password = PasswordField("Enter New Password", validators=[DataRequired()])
+    submit = SubmitField("Change Password")

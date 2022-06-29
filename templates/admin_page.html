@@ -26,6 +26,19 @@
 									<span class="image"><img src="{{ url_for('static', filename='images/pic01.jpg') }}" alt="" /></span>
 								</div>
 								<footer class="major">
+									<ul class="actions special">
+										<li><a href="{{url_for('logout')}}" class="button">Logout</a></li>
+										<li>
+										{{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+										{% with messages = get_flashed_messages() %}
+										{% if messages %}
+										{% for message in messages %}
+										<p>{{ message }}</p>
+										{% endfor %}
+										{% endif %}
+										{% endwith %}
+										</li>
+									</ul>
 								</footer>
 							</section>
 					</div>

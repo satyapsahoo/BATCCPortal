@@ -38,7 +38,13 @@
 								</div>
 								<footer class="major">
 									<ul class="actions special">
+										{% if current_user.id == 1 %}
+            							<li><a href="{{url_for('admin_page')}}" class="button primary">Admin Page</a></li>
+										{% else %}
 										<li><a href="{{url_for('edit_profile')}}" class="button primary">Edit Profile</a></li>
+										<li><a href="{{url_for('logout')}}" class="button">Logout</a></li>
+										<li>{{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}</li>
+										{% endif %}
 									</ul>
 								</footer>
 							</section>
