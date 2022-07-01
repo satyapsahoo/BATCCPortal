@@ -65,7 +65,7 @@
 											<h2>Meet the Lions</h2>
 										</header>
 										<p>This team plays in the league matches.</p>
-										{% for n in range(number_players) %}
+										{% for n in range(1, number_players) %}
 										<div class="gallery">
 											<img src='static/Player_Images/{{images[n]}}.jpg' alt="" width="600" height="400">
 										  	<div class="desc">{{ players[n] }}</div>
