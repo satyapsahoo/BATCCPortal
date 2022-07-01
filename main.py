@@ -20,13 +20,13 @@ Bootstrap(app)
 
 
 # CONNECT TO DB from Heroku
-uri = os.environ.get("DATABASE_URL")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# uri = os.environ.get("DATABASE_URL")
+# if uri and uri.startswith("postgres://"):
+#     uri = uri.replace("postgres://", "postgresql://", 1)
+# app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 # CONNECT TO DB from Pycharm
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///club.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///club.db")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -120,7 +120,7 @@ def register():
             email=register_form.email.data,
             password=werkzeug.security.generate_password_hash(register_form.password.data, method='pbkdf2:sha256',
                                                               salt_length=8),
-            name=register_form.name.data,
+            name=register_form.name.data.title(),
             address=register_form.address.data,
             dress_size=register_form.dress_size.data,
             dob=register_form.dob.data,
@@ -146,8 +146,7 @@ def player_profile(player_id):
     player = User.query.filter_by(id=player_id).first()
     # Create a Players object and get the filename of the player image
     players = Players()
-    player_image = players.image_file(player.name)
-    print(player_image)
+    player_image = players.get_image_file(player.name)
     # Code to change password
     if change_password_form.validate_on_submit():
         new_password = change_password_form.password.data
