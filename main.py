@@ -11,6 +11,8 @@ from flask import abort
 import os
 from players import Players
 
+# Initiate the flask app with bootstrap and wtf forms
+# Secret key is stored in environ variable in heroku as well as pycharm
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
@@ -29,6 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# Use login manager to find current user status and authenticate
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -80,7 +83,7 @@ def login():
         email = login_form.email.data
         password = login_form.password.data
         user = User.query.filter_by(email=email).first()
-
+        # Use flash messages to make login interactive
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
@@ -112,7 +115,7 @@ def register():
             # User already exists
             flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
-
+        # Create new user and login the new user
         new_user = User(
             email=register_form.email.data,
             password=werkzeug.security.generate_password_hash(register_form.password.data, method='pbkdf2:sha256',
@@ -137,8 +140,15 @@ def register():
 @app.route('/player_profile/<player_id>', methods=["GET", "POST"])
 @login_required
 def player_profile(player_id):
+    # Give user the privilege to change password through a wtf change_password_form
     change_password_form = ChangePassword()
+    # Find the player entry from the database
     player = User.query.filter_by(id=player_id).first()
+    # Create a Players object and get the filename of the player image
+    players = Players()
+    player_image = players.image_file(player.name)
+    print(player_image)
+    # Code to change password
     if change_password_form.validate_on_submit():
         new_password = change_password_form.password.data
         current_user.password = werkzeug.security.generate_password_hash(new_password, method='pbkdf2:sha256',
@@ -146,12 +156,14 @@ def player_profile(player_id):
         db.session.commit()
         logout_user()
         return redirect(url_for('login'))
-    return render_template("player_profile.html", player=player, form=change_password_form, current_user=current_user)
+    return render_template("player_profile.html", player=player, form=change_password_form, current_user=current_user,
+                           player_image=player_image)
 
 
 @app.route('/edit_profile', methods=["GET", "POST"])
 @login_required
 def edit_profile():
+    # Allow the user to edit certain parts from his profile
     edit_form = EditForm(
         name=current_user.name,
         address=current_user.address,
@@ -161,6 +173,7 @@ def edit_profile():
         weakness=current_user.weakness,
         improvements=current_user.improvements,
     )
+    # Prefill the edit form with the current values
     if edit_form.validate_on_submit():
         current_user.address = edit_form.address.data
         current_user.name = edit_form.name.data
@@ -178,8 +191,11 @@ def edit_profile():
 @app.route('/admin_page', methods=["GET", "POST"])
 @admin_only
 def admin_page():
+    # Create a admin password reset form
     reset_password_form = ResetPassword()
+    # Query for all users to display the users in admin page
     all_players = User.query.all()
+    # Reset password code
     if reset_password_form.validate_on_submit():
         name = reset_password_form.name.data
         req_player = User.query.filter_by(name=name).first()
@@ -197,6 +213,7 @@ def admin_page():
 @app.route('/admin_edit/<player_id>', methods=["GET", "POST"])
 @admin_only
 def admin_edit(player_id):
+    # After click on player from admin page, allow admin to update certain fields in the player profile
     req_player = User.query.filter_by(id=player_id).first()
     print(req_player.name)
     admin_form = AdminForm(
@@ -217,6 +234,7 @@ def admin_edit(player_id):
 
 @app.route('/batcc_falcons', methods=["GET", "POST"])
 def batcc_falcons():
+    # Get all falcon player album with name list and image list from the Player class
     falcon_players = Players()
     falcon_players.get_falcons()
     return render_template("batcc_falcons.html", players=falcon_players.player_list, images=falcon_players.image_list,
@@ -225,6 +243,7 @@ def batcc_falcons():
 
 @app.route('/batcc_lions', methods=["GET", "POST"])
 def batcc_lions():
+    # Get all lion player album with name list and image list from the Player class
     lion_players = Players()
     lion_players.get_lions()
     return render_template("batcc_lions.html", players=lion_players.player_list, images=lion_players.image_list,
@@ -233,6 +252,7 @@ def batcc_lions():
 
 @app.route('/scheduler')
 def scheduler():
+    # Excel based scheduler
     return render_template("scheduler.html")
 
 

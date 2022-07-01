@@ -17,9 +17,11 @@
 											<h2>Administrator Page</h2>
 										</header>
 										<p>
+											<h2><a href="https://evolfastconsulting-my.sharepoint.com/:f:/g/personal/satya_sahoo_evolfast_de/Eh_zs7wajUBKnLOCY-gvQ_sBxnG_SrhBL5e1jZH7gIgGgQ?e=xno5d9" target="_blank">Player Passes</a></h2>
+										</p>
+										<p>
 											{% for player in players %}
-											<a href="{{ url_for('admin_edit', player_id=player.id) }}">
-											<h2> {{player.name}} </h2> </a>
+											<h2><a href="{{ url_for('admin_edit', player_id=player.id) }}">{{player.name}}</a></h2>
 											{% endfor %}
 										</p>
 									</div>

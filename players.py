@@ -6,6 +6,10 @@ class Players:
         self.number_players = int()
 
     def get_falcons(self):
+        # Clear the player and image list as it might mix up falcon and lion players
+        self.player_list.clear()
+        self.image_list.clear()
+        # Dictionary of all falcon player, to be manually updated. Match the value with the image file name
         players_dict = {
             "Dinesh Sasi Kumar ": "Dinesh",
             "Vineet Bhola": "Vineet",
@@ -39,6 +43,10 @@ class Players:
         return self.player_list, self.image_list, self.number_players
 
     def get_lions(self):
+        # Clear the player and image list as it might mix up falcon and lion players
+        self.player_list.clear()
+        self.image_list.clear()
+        # Dictionary of all falcon player, to be manually updated. Match the value with the image file name
         players_dict = {
             "Dinesh Sasi Kumar ": "Dinesh",
             "Vineet Bhola": "Vineet",
@@ -70,3 +78,17 @@ class Players:
             self.image_list.append(players_dict[player])
         self.number_players = len(self.player_list)
         return self.player_list, self.image_list, self.number_players
+
+    def image_file(self, player_name):
+        # Get image file name from the player profile page and return the image file name
+        self.get_falcons()
+        for player in self.player_list:
+            if player == player_name:
+                index = self.player_list.index(player)
+                return self.image_list[index]
+
+        self.get_lions()
+        for player in self.player_list:
+            if player == player_name:
+                index = self.player_list.index(player)
+                return self.image_list[index]
