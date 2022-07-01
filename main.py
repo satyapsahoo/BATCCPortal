@@ -223,6 +223,7 @@ def admin_edit(player_id):
         improvements=req_player.improvements,
     )
     if admin_form.validate_on_submit():
+        req_player.name = admin_form.name.data
         req_player.strength = admin_form.strength.data
         req_player.weakness = admin_form.weakness.data
         req_player.improvements = admin_form.improvements.data
