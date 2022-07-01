@@ -253,7 +253,7 @@ def batcc_lions():
 @app.route('/scheduler')
 def scheduler():
     # Excel based scheduler
-    return render_template("scheduler.html")
+    return render_template("scheduler1.html")
 
 
 if __name__ == "__main__":
