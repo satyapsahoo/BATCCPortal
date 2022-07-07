@@ -6,7 +6,7 @@
 							<li><a href="#intro" class="active">Introduction</a></li>
 							<li><a href="#first">Players</a></li>
 							<li><a href="#second">Matches</a></li>
-							<li><a href="#cta">Announcements</a></li>
+							<li><a href="#cta">Downloads</a></li>
 						</ul>
 					</nav>
 
@@ -86,19 +86,22 @@
 								</footer>
 							</section>
 
-						<!-- Announcements -->
+						<!-- Downloads -->
 							<section id="cta" class="main special">
 								<header class="major">
-									<h2>Announcements</h2>
-									<p>
-                                    <h3>BATCC Falcons reached the KO stage (Round of 16) in 2022 T20 Liga</h3>
-									</p>
+									<h2>Downloads</h2>
+									<p></p>
 								</header>
 
 								<footer class="major">
 									<ul class="actions special">
-										<li><a href="https://www.facebook.com/batcccricket" target="_blank">Facebook Posts</a></li>
+										<li><a href="{{ url_for('static', filename='documents/BC Attaching Application.pdf') }}" target="_blank">Club Enrolment Form</a></li>
 										<li><a href="{{ url_for('static', filename='documents/BATCC Sponsorship.pdf') }}" target="_blank">Sponsorship Opportunities</a></li>
+										<li><a href="{{ url_for('static', filename='documents/Club Structure.pdf') }}" target="_blank">Club Structure</a></li>
+									</ul>
+									<ul class="actions special">
+										<li><a href="{{ url_for('static', filename='documents/DCB Spieleordnung.pdf') }}" target="_blank">DCB Spieleordnung</a></li>
+										<li><a href="{{ url_for('static', filename='documents/DCB_Spielberichtsbogen_2022_03072022.docx') }}" target="_blank">DCB Spielberichtsbogen</a></li>
 									</ul>
 								</footer>
 							</section>
