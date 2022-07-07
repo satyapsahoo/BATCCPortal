@@ -1,0 +1,41 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="{{url_for('home')}}" class="active">Home</a></li>
+						</ul>
+					</nav>
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Announcements</h2>
+										</header>
+										<ul>
+										{% for announcement in announcements %}
+											<li><a href="{{ url_for('show_announcement', announcement_id=announcement.id) }}">
+												<h2> {{announcement.title}} </h2></a>
+												{% if current_user.id == 1: %}
+            									<a href="{{url_for('delete_announcement', announcement_id=announcement.id) }}">✘</a>
+												{% endif %}
+											</li>
+										{% endfor %}
+										</ul>
+									</div>
+								</div>
+								<footer class="major">
+									<ul class="actions special">
+									{% if current_user.id == 1 %}
+            							<li><a href="{{url_for('admin_page')}}" class="button primary">Admin Page</a></li>
+									{% endif %}
+									</ul>
+								</footer>
+							</section>
+					</div>
+
+{% include "footer.html" %}

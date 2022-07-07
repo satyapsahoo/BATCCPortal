@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import RegisterForm, LoginForm, EditForm, AdminForm, ResetPassword, ChangePassword
+from forms import RegisterForm, LoginForm, EditForm, AdminForm, ResetPassword, ChangePassword, AnnouncementForm
 from functools import wraps
 from flask import abort
 import os
@@ -64,7 +64,15 @@ class User(UserMixin, db.Model):
     improvements = db.Column(db.Text)
 
 
-# db.create_all()
+class Announcement(db.Model):
+    __tablename__ = "announcement"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    body = db.Column(db.Text, nullable=False)
+
+
+db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -254,6 +262,42 @@ def batcc_lions():
 def scheduler():
     # Excel based scheduler
     return render_template("scheduler1.html")
+
+
+@app.route('/announcements')
+def announcements():
+    all_announcements = Announcement.query.all()
+    return render_template("announcements.html", announcements=all_announcements)
+
+
+@app.route('/make_announcement', methods=["GET", "POST"])
+@admin_only
+def make_announcement():
+    announcement_form = AnnouncementForm()
+    if announcement_form.validate_on_submit():
+        new_announcement = Announcement(
+            title=announcement_form.title.data,
+            body=announcement_form.body.data
+        )
+        db.session.add(new_announcement)
+        db.session.commit()
+        return redirect(url_for('announcements'))
+    return render_template("make_announcement.html", form=announcement_form)
+
+
+@app.route("/delete_announcement/<int:announcement_id>")
+@admin_only
+def delete_announcement(announcement_id):
+    announcement_to_delete = Announcement.query.get(announcement_id)
+    db.session.delete(announcement_to_delete)
+    db.session.commit()
+    return redirect(url_for('announcements'))
+
+
+@app.route("/show_announcement/<int:announcement_id>", methods=["GET", "POST"])
+def show_announcement(announcement_id):
+    requested_announcement = Announcement.query.get(announcement_id)
+    return render_template("show_announcement.html", announcement=requested_announcement)
 
 
 if __name__ == "__main__":

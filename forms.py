@@ -52,3 +52,9 @@ class ResetPassword(FlaskForm):
 class ChangePassword(FlaskForm):
     password = PasswordField("Enter New Password", validators=[DataRequired()])
     submit = SubmitField("Change Password")
+
+
+class AnnouncementForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    body = CKEditorField("Content", validators=[DataRequired()])
+    submit = SubmitField("Submit")
