@@ -84,6 +84,11 @@ def home():
     return render_template("index.html")
 
 
+@app.route('/batcc')
+def batcc():
+    return render_template("batcc.html")
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     login_form = LoginForm()

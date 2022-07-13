@@ -1,0 +1,49 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="{{url_for('home')}}" class="active">Home</a></li>
+						</ul>
+					</nav>
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Cricket in BC Attaching</h2>
+										</header>
+										<p>
+										To all cricket enthusiasts! Thank you for taking time out to know about us.
+										Lions United a new cricket club formed in 2019 as a cricket department under BC Attaching (established in 1957).
+										</p>
+										We play in the following leagues:
+										<ul>
+										    <li>Indoor tournaments in winter</li>
+										    <li>Bayern Verbandsliga in summer</li>
+										    <li>Outdoor tennis ball tournaments in summer</li>
+										</ul>
+										<p>
+											Our objective is to grow cricket in the region of Munich and Freising. Most of our members are either working in IT and Engineering,
+											and many are students from in and around Munich. We believe in providing equal opportunity to all who seek to enjoy the game of cricket.
+										</p>
+										<p>
+											As a member of <a href="http://www.bc-attaching.de" class="active">BC Attaching</a>, in addition to cricket, you are also entitled to play football, tennis, baseball,
+											etc in the club. The facilities include a big cricket ground with 70 m boundaries, a spacious indoor hall for winters, clean toilets and changing
+											rooms with showers during the match. You can see the pictures in our facebook page, in the link at the bottom of the page.
+										</p>
+									</div>
+									<span class="image"><img src="{{ url_for('static', filename='images/Team.jpeg') }}" alt="" /></span>
+								</div>
+								<footer class="major">
+									<img src="{{ url_for('static', filename='images/Ground.jpg') }}" alt="" width="300" height="200">
+									<img src="{{ url_for('static', filename='images/Changing Room.jpg') }}" alt="" width="300" height="200">
+									<img src="{{ url_for('static', filename='images/Restaurant.jpg') }}" alt="" width="300" height="200">
+								</footer>
+							</section>
+					</div>
+
+{% include "footer.html" %}
