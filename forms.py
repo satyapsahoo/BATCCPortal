@@ -41,6 +41,9 @@ class AdminForm(FlaskForm):
     strength = CKEditorField("Strength Area")
     weakness = CKEditorField("Weakness Area")
     improvements = CKEditorField("Improvement Area")
+    address = StringField("Address")
+    dress_size = StringField("Dress Size S/M/L/XL")
+    passport = StringField("Passport Number")
     submit = SubmitField("Submit")
 
 
