@@ -233,18 +233,12 @@ def admin_edit(player_id):
         strength=req_player.strength,
         weakness=req_player.weakness,
         improvements=req_player.improvements,
-        address=req_player.address,
-        dress_size=req_player.dress_size,
-        passport=req_player.passport,
     )
     if admin_form.validate_on_submit():
         req_player.name = admin_form.name.data
         req_player.strength = admin_form.strength.data
         req_player.weakness = admin_form.weakness.data
         req_player.improvements = admin_form.improvements.data
-        req_player.address = admin_form.address.data
-        req_player.dress_size = admin_form.dress_size.data
-        req_player.passport = admin_form.passport.data
         db.session.commit()
         return redirect(url_for('player_profile', player_id=req_player.id))
 
